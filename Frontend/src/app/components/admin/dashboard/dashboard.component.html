@@ -1,0 +1,65 @@
+<div class="dashboard-page">
+  <div class="container">
+    <h1>Tableau de Bord Administrateur</h1>
+    
+    <div *ngIf="loading" class="loading">Chargement des données...</div>
+
+    <div *ngIf="errorMessage && !loading" class="alert alert-danger">
+      {{ errorMessage }}
+    </div>
+
+    <!-- Statistiques -->
+    <div class="dashboard-grid" *ngIf="!loading && !errorMessage">
+      <div class="stat-card total">
+        <div class="stat-icon">👥</div>
+        <div class="stat-content">
+          <h3>Total Utilisateurs</h3>
+          <p class="stat-number">{{ totalUsers }}</p>
+        </div>
+        <a routerLink="/admin/users" class="stat-link">Gérer →</a>
+      </div>
+
+      <div class="stat-card doctors">
+        <div class="stat-icon">👨‍⚕️</div>
+        <div class="stat-content">
+          <h3>Docteurs</h3>
+          <p class="stat-number">{{ totalDoctors }}</p>
+        </div>
+      </div>
+
+      <div class="stat-card secretaries">
+        <div class="stat-icon">👩‍💼</div>
+        <div class="stat-content">
+          <h3>Secrétaires</h3>
+          <p class="stat-number">{{ totalSecretaries }}</p>
+        </div>
+      </div>
+
+      <div class="stat-card patients">
+        <div class="stat-icon">🧑</div>
+        <div class="stat-content">
+          <h3>Patients</h3>
+          <p class="stat-number">{{ totalPatients }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Accès Rapide -->
+    <div class="quick-actions" *ngIf="!loading && !errorMessage">
+      <h2>Accès Rapide</h2>
+      <div class="actions-grid">
+        <a routerLink="/admin/users/list" class="action-card users">
+          <div class="action-icon">👥</div>
+          <h3>Gestion des Utilisateurs</h3>
+          <p>Créer, modifier et supprimer des utilisateurs</p>
+        </a>
+
+        <a routerLink="/admin/users/create" class="action-card create">
+          <div class="action-icon">➕</div>
+          <h3>Créer un Utilisateur</h3>
+          <p>Ajouter un docteur, secrétaire ou admin</p>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,73 @@
+<div class="home-page">
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-overlay"></div>
+    <div class="container hero-content">
+      <h1 class="hero-title">Bienvenue sur HealthApp</h1>
+      <p class="hero-subtitle">Votre solution complète de gestion médicale</p>
+      <div class="hero-buttons">
+        <button class="btn-primary" (click)="navigateToRegister()">
+          ➕ S'inscrire
+        </button>
+        <button class="btn-secondary-outline" (click)="navigateToLogin()">
+          🔐 Se Connecter
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features-section">
+    <div class="container">
+      <h2 class="section-title">Nos Fonctionnalités</h2>
+      <div class="features-grid">
+        <div class="feature-card" *ngFor="let feature of features">
+          <div class="feature-icon">{{ feature.icon }}</div>
+          <h3>{{ feature.title }}</h3>
+          <p>{{ feature.description }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="about-section">
+    <div class="container about-content">
+      <div class="about-text">
+        <h2>À Propos de HealthApp</h2>
+        <p>
+          HealthApp est une plateforme moderne de gestion médicale conçue pour 
+          simplifier le travail des professionnels de santé et améliorer 
+          l'expérience des patients.
+        </p>
+        <ul>
+          <li>✅ Interface intuitive et facile à utiliser</li>
+          <li>✅ Gestion sécurisée des données médicales</li>
+          <li>✅ Accès multi-utilisateurs (Admin, Médecins, Secrétaires, Patients)</li>
+          <li>✅ Système de rendez-vous automatisé</li>
+        </ul>
+      </div>
+      <div class="about-image">
+        <div class="image-placeholder">
+          <span class="placeholder-icon">🏥</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <div class="container cta-content">
+      <h2>Prêt à Commencer ?</h2>
+      <p>Rejoignez-nous pour une meilleure gestion de votre cabinet médical</p>
+      <div class="cta-buttons">
+        <button class="btn-primary" (click)="navigateToRegister()">
+          Créer un compte patient
+        </button>
+        <button class="btn-secondary" (click)="navigateToLogin()">
+          Se Connecter
+        </button>
+      </div>
+    </div>
+  </section>
+</div>

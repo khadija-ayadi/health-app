@@ -1,0 +1,63 @@
+<header class="header">
+  <div class="container header-container">
+    <div class="logo" routerLink="/">
+      <i class="icon-health"></i>
+      <span>HealthApp</span>
+    </div>
+
+    <button class="mobile-menu-toggle" (click)="toggleMenu()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <nav class="nav-menu" [class.active]="menuOpen">
+      <!-- Navigation publique -->
+      <div class="nav-links" *ngIf="!isAuthenticated">
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Accueil</a>
+        <a routerLink="/register" routerLinkActive="active">Inscription</a>
+        <a routerLink="/login" routerLinkActive="active" class="btn-login-link">Connexion</a>
+      </div>
+
+      <!-- Navigation Admin -->
+      <div class="nav-links" *ngIf="isAuthenticated && userRole === UserRole.ADMIN">
+        <a routerLink="/admin" routerLinkActive="active">Tableau de bord</a>
+        <a routerLink="/admin/users/create" routerLinkActive="active">Créer Utilisateur</a>
+        <a routerLink="/admin/users/list" routerLinkActive="active">Liste Utilisateurs</a>
+        <a routerLink="/admin/messages" routerLinkActive="active">Messages</a>
+      </div>
+
+      <!-- Navigation Doctor -->
+      <div class="nav-links" *ngIf="isAuthenticated && userRole === UserRole.DOCTOR">
+        <a routerLink="/doctor" routerLinkActive="active">Tableau de bord</a>
+        <a routerLink="/doctor/patients" routerLinkActive="active">Mes Patients</a>
+        <a routerLink="/doctor/rendezvous" routerLinkActive="active">Rendez-vous</a>
+        <a routerLink="/contact" routerLinkActive="active">Contact</a>
+      </div>
+
+      <!-- Navigation Secretary -->
+      <div class="nav-links" *ngIf="isAuthenticated && userRole === UserRole.SECRETARY">
+        <a routerLink="/secretary" routerLinkActive="active">Tableau de bord</a>
+        <a routerLink="/secretary/rendezvous" routerLinkActive="active">Rendez-vous</a>
+        <a routerLink="/secretary/patients" routerLinkActive="active">Patients</a>
+        <a routerLink="/contact" routerLinkActive="active">Contact</a>
+      </div>
+
+      <!-- Navigation Patient -->
+      <div class="nav-links" *ngIf="isAuthenticated && userRole === UserRole.PATIENT">
+        <a routerLink="/patient" routerLinkActive="active">Tableau de bord</a>
+        <a routerLink="/patient/rendezvous" routerLinkActive="active">Mes Rendez-vous</a>
+        <a routerLink="/patient/rendezvous/create" routerLinkActive="active">Prendre RDV</a>
+        <a routerLink="/contact" routerLinkActive="active">Contact</a>
+      </div>
+
+      <!-- Bouton de déconnexion -->
+      <div class="nav-actions" *ngIf="isAuthenticated">
+        <button class="btn-logout" (click)="logout()">
+          <i class="icon-logout"></i>
+          Déconnexion
+        </button>
+      </div>
+    </nav>
+  </div>
+</header>

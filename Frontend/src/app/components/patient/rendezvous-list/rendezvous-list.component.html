@@ -1,0 +1,108 @@
+<div class="rendezvous-page">
+  <div class="container">
+    <div class="page-header">
+      <h1>Mes Rendez-vous</h1>
+      <div class="header-actions">
+        <a routerLink="/patient/rendezvous/create" class="btn btn-primary">
+          ➕ Prendre un rendez-vous
+        </a>
+        <a routerLink="/patient" class="btn btn-secondary">
+          ← Retour au tableau de bord
+        </a>
+      </div>
+    </div>
+
+    <div *ngIf="loading" class="loading">Chargement des rendez-vous...</div>
+
+    <div *ngIf="successMessage" class="alert alert-success">
+      {{ successMessage }}
+    </div>
+
+    <div *ngIf="errorMessage" class="alert alert-danger">
+      {{ errorMessage }}
+    </div>
+
+    <div class="card" *ngIf="!loading">
+      <div *ngIf="rendezVousList.length === 0" class="empty-state">
+        <div class="empty-state-icon">📅</div>
+        <h3>Aucun rendez-vous</h3>
+        <p>Vous n'avez pas encore de rendez-vous programmé</p>
+        <a routerLink="/patient/rendezvous/create" class="btn btn-primary">
+          Prendre un rendez-vous
+        </a>
+      </div>
+
+      <table *ngIf="rendezVousList.length > 0">
+        <thead>
+          <tr>
+            <th>Date & Heure</th>
+            <th>Docteur</th>
+            <th>Spécialité</th>
+            <th>Notes</th>
+            <th>Statut</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let rdv of rendezVousList">
+            <td>
+              <strong>{{ rdv.dateRendezVous | date: 'dd/MM/yyyy' }}</strong>
+              <br>
+              <small>{{ rdv.dateRendezVous | date: 'HH:mm' }}</small>
+            </td>
+            <td>
+              <strong>Dr. {{ rdv.doctor?.firstName }} {{ rdv.doctor?.lastName }}</strong>
+              <br>
+              <small>{{ rdv.doctor?.email }}</small>
+              <br>
+              <small *ngIf="rdv.doctor?.phone">📞 {{ rdv.doctor?.phone }}</small>
+            </td>
+            <td>
+              <span class="specialty-badge">{{ rdv.speciality }}</span>
+            </td>
+            <td>
+              <span *ngIf="rdv.notes">{{ rdv.notes }}</span>
+              <span *ngIf="!rdv.notes" class="text-muted">Aucune note</span>
+            </td>
+            <td>
+              <span [class]="'badge ' + getStatusBadgeClass(rdv)">
+                {{ getStatusText(rdv) }}
+              </span>
+            </td>
+            <td>
+              <div class="action-buttons">
+                <button 
+                  *ngIf="canCancel(rdv) && !rdv.accepted"
+                  class="btn btn-warning btn-sm"
+                  [routerLink]="['/patient/rendezvous', rdv.id, 'edit']"
+                  style="margin-right: 5px;">
+                  ✏️ Modifier
+                </button>
+                <button 
+                  *ngIf="canCancel(rdv)"
+                  class="btn btn-danger btn-sm"
+                  (click)="cancelRendezVous(rdv.id!)">
+                  ❌ Annuler
+                </button>
+                <span *ngIf="!canCancel(rdv)" class="text-muted">
+                  <small>Non modifiable<br>(moins de 24h)</small>
+                </span>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Informations supplémentaires -->
+    <div class="info-box" *ngIf="!loading && rendezVousList.length > 0">
+      <h3>ℹ️ Informations importantes</h3>
+      <ul>
+        <li>Vous pouvez modifier ou annuler un rendez-vous jusqu'à <strong>24 heures avant</strong> la date prévue.</li>
+        <li>Les rendez-vous <span class="badge badge-warning">En attente</span> doivent être validés par la secrétaire.</li>
+        <li>Les rendez-vous <span class="badge badge-success">Acceptés</span> sont confirmés.</li>
+        <li>Pensez à vous présenter <strong>10 minutes avant</strong> l'heure de votre rendez-vous.</li>
+      </ul>
+    </div>
+  </div>
+</div>

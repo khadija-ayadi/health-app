@@ -1,0 +1,154 @@
+<div class="contact-page">
+  <div class="container">
+    <!-- Hero Section -->
+    <div class="contact-hero">
+      <h1>Contactez-nous</h1>
+      <p>Nous sommes là pour répondre à vos questions</p>
+    </div>
+
+    <div class="contact-content">
+      <!-- Formulaire de Contact -->
+      <div class="contact-form-section">
+        <div class="card">
+          <h2>Envoyez-nous un message</h2>
+
+          <!-- Messages -->
+          <div *ngIf="errorMessage" class="alert alert-danger">
+            {{ errorMessage }}
+          </div>
+          <div *ngIf="successMessage" class="alert alert-success">
+            {{ successMessage }}
+          </div>
+
+          <form (ngSubmit)="onSubmit()" #contactForm="ngForm">
+            <div class="form-group">
+              <label for="name">Nom complet *</label>
+              <input 
+                type="text" 
+                id="name" 
+                name="name"
+                class="form-control"
+                [(ngModel)]="contact.name"
+                placeholder="Votre nom"
+                required>
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email *</label>
+              <input 
+                type="email" 
+                id="email" 
+                name="email"
+                class="form-control"
+                [(ngModel)]="contact.email"
+                placeholder="votre.email@example.com"
+                required
+                email>
+            </div>
+
+            <div class="form-group">
+              <label for="phone">Téléphone</label>
+              <input 
+                type="tel" 
+                id="phone" 
+                name="phone"
+                class="form-control"
+                [(ngModel)]="contact.phone"
+                placeholder="+216 XX XXX XXX">
+            </div>
+
+            <div class="form-group">
+              <label for="subject">Sujet *</label>
+              <input 
+                type="text" 
+                id="subject" 
+                name="subject"
+                class="form-control"
+                [(ngModel)]="contact.subject"
+                placeholder="Sujet de votre message"
+                required>
+            </div>
+
+            <div class="form-group">
+              <label for="message">Message *</label>
+              <textarea 
+                id="message" 
+                name="message"
+                class="form-control"
+                [(ngModel)]="contact.message"
+                rows="6"
+                placeholder="Écrivez votre message ici..."
+                required></textarea>
+            </div>
+
+            <button 
+              type="submit" 
+              class="btn btn-primary btn-block"
+              [disabled]="!contactForm.valid || loading">
+              <span *ngIf="!loading">📧 Envoyer le message</span>
+              <span *ngIf="loading">⏳ Envoi en cours...</span>
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Informations de Contact -->
+      <div class="contact-info-section">
+        <div class="card info-card">
+          <h3>📍 Nos Coordonnées</h3>
+          
+          <div class="info-item">
+            <div class="info-icon">📧</div>
+            <div class="info-content">
+              <h4>Email</h4>
+              <a href="mailto:contact@healthapp.com">contact@healthapp.com</a>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <div class="info-icon">📱</div>
+            <div class="info-content">
+              <h4>Téléphone</h4>
+              <a href="tel:+21612345678">+216 XX XXX XXX</a>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <div class="info-icon">📍</div>
+            <div class="info-content">
+              <h4>Adresse</h4>
+              <p>Tunis, Tunisie</p>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <div class="info-icon">⏰</div>
+            <div class="info-content">
+              <h4>Horaires</h4>
+              <p>Lun - Ven: 9h00 - 18h00</p>
+              <p>Sam: 9h00 - 13h00</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card social-card">
+          <h3>Suivez-nous</h3>
+          <div class="social-links">
+            <a href="#" class="social-link facebook">
+              <span>📘</span> Facebook
+            </a>
+            <a href="#" class="social-link twitter">
+              <span>🐦</span> Twitter
+            </a>
+            <a href="#" class="social-link instagram">
+              <span>📷</span> Instagram
+            </a>
+            <a href="#" class="social-link linkedin">
+              <span>💼</span> LinkedIn
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

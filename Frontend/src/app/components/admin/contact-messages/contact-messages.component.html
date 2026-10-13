@@ -1,0 +1,97 @@
+<div class="messages-page">
+  <div class="container">
+    <div class="page-header">
+      <h1>Messages de Contact</h1>
+      <div class="header-info">
+        <span class="unread-badge" *ngIf="unreadCount > 0">
+          {{ unreadCount }} non lu(s)
+        </span>
+        <a routerLink="/admin" class="btn btn-secondary">
+          ← Retour au tableau de bord
+        </a>
+      </div>
+    </div>
+
+    <!-- Filtres -->
+    <div class="filters-section">
+      <div class="filter-group">
+        <label for="filterStatus">Filtrer par statut:</label>
+        <select 
+          id="filterStatus" 
+          [(ngModel)]="filterStatus" 
+          (change)="onFilterChange()" 
+          class="form-control">
+          <option value="all">Tous les messages</option>
+          <option value="unread">Non lus</option>
+          <option value="read">Lus</option>
+        </select>
+      </div>
+
+      <div class="filter-results">
+        <strong>{{ filteredMessages.length }}</strong> message(s) trouvé(s)
+      </div>
+    </div>
+
+    <!-- Messages -->
+    <div *ngIf="loading" class="loading">Chargement des messages...</div>
+
+    <div *ngIf="errorMessage" class="alert alert-danger">
+      {{ errorMessage }}
+    </div>
+
+    <div *ngIf="successMessage" class="alert alert-success">
+      {{ successMessage }}
+    </div>
+
+    <div class="messages-list" *ngIf="!loading">
+      <div *ngIf="filteredMessages.length === 0" class="empty-state">
+        <div class="empty-state-icon">📭</div>
+        <h3>Aucun message</h3>
+        <p>Il n'y a pas de messages correspondant à votre filtre</p>
+      </div>
+
+      <div 
+        *ngFor="let message of filteredMessages" 
+        class="message-card"
+        [class.unread]="!message.isRead">
+        
+        <div class="message-header">
+          <div class="message-sender">
+            <div class="sender-avatar">{{ message.name.charAt(0).toUpperCase() }}</div>
+            <div class="sender-info">
+              <h3>{{ message.name }}</h3>
+              <p>{{ message.email }}</p>
+              <p *ngIf="message.phone" class="phone">📱 {{ message.phone }}</p>
+            </div>
+          </div>
+          
+          <div class="message-meta">
+            <span [class]="'badge ' + getStatusBadgeClass(message)">
+              {{ getStatusText(message) }}
+            </span>
+            <span class="message-date">{{ formatDate(message.createdAt!) }}</span>
+          </div>
+        </div>
+
+        <div class="message-body">
+          <h4 class="message-subject">{{ message.subject }}</h4>
+          <p class="message-text">{{ message.message }}</p>
+        </div>
+
+        <div class="message-actions">
+          <button 
+            *ngIf="!message.isRead"
+            class="btn btn-sm btn-info" 
+            (click)="markAsRead(message)">
+            ✓ Marquer comme lu
+          </button>
+          <button 
+            class="btn btn-sm btn-danger" 
+            (click)="deleteMessage(message)">
+            🗑️ Supprimer
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

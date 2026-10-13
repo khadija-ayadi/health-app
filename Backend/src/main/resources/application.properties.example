@@ -1,0 +1,16 @@
+
+server.port=8081
+
+# ----------------------------------------------------
+# PostgreSQL Database configuration
+# ----------------------------------------------------
+spring.datasource.url=jdbc:postgresql://localhost:5432/healthApp?currentSchema=health_app
+spring.datasource.username=postgres
+spring.datasource.password=root
+
+spring.datasource.driver-class-name=org.postgresql.Driver
+
+# JPA / Hibernate
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+spring.jpa.properties.hibernate.default_schema=health_app

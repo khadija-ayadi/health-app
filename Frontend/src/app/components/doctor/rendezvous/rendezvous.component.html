@@ -1,0 +1,97 @@
+<div class="rendezvous-page">
+  <div class="container">
+    <div class="page-header">
+      <h1>Mes Rendez-vous</h1>
+      <a [routerLink]="isSecretary ? '/secretary' : '/doctor'" class="btn btn-secondary">
+        ← Retour au tableau de bord
+      </a>
+    </div>
+
+    <div *ngIf="loading" class="loading">Chargement des rendez-vous...</div>
+    <div class="filters-section" *ngIf="!loading && rendezVousList.length > 0">
+      <!-- Filtre par statut - UNIQUEMENT pour les secrétaires -->
+      <div class="filter-group" *ngIf="isSecretary">
+        <label for="filterStatus">Statut:</label>
+        <select id="filterStatus" [(ngModel)]="filterStatus" (change)="onFilterChange()" class="form-control">
+          <option value="all">Tous</option>
+          <option value="accepted">Acceptés</option>
+          <option value="pending">En attente</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="filterDate">Période:</label>
+        <select id="filterDate" [(ngModel)]="filterDate" (change)="onFilterChange()" class="form-control">
+          <option value="all">Tous</option>
+          <option value="today">Aujourd'hui</option>
+          <option value="week">Cette semaine</option>
+          <option value="month">Ce mois</option>
+        </select>
+      </div>
+
+      <div class="filter-results">
+        <strong>{{ filteredRendezVous.length }}</strong> rendez-vous trouvé(s)
+      </div>
+    </div>
+
+    <div class="card" *ngIf="!loading">
+      <div *ngIf="rendezVousList.length === 0" class="empty-state">
+        <div class="empty-state-icon">📅</div>
+        <h3>Aucun rendez-vous</h3>
+        <p>Vous n'avez pas encore de rendez-vous</p>
+      </div>
+
+      <table *ngIf="filteredRendezVous.length > 0">
+        <thead>
+          <tr>
+            <th>Patient</th>
+            <th>Date & Heure</th>
+            <th>Spécialité</th>
+            <th>Notes</th>
+            <th>Statut</th>
+            <th *ngIf="isSecretary">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let rdv of filteredRendezVous">
+            <td>
+              <strong>{{ rdv.patient?.firstName }} {{ rdv.patient?.lastName }}</strong>
+              <br>
+              <small>{{ rdv.patient?.email }}</small>
+            </td>
+            <td>
+              <strong>{{ rdv.dateRendezVous | date: 'dd/MM/yyyy' }}</strong>
+              <br>
+              <small>{{ rdv.dateRendezVous | date: 'HH:mm' }}</small>
+            </td>
+            <td>
+              <span class="specialty-badge">{{ rdv.speciality }}</span>
+            </td>
+            <td>{{ rdv.notes || 'Aucune note' }}</td>
+            <td>
+              <span [class]="'badge ' + getStatusBadgeClass(rdv)">
+                {{ getStatusText(rdv) }}
+              </span>
+            </td>
+            <td *ngIf="isSecretary">
+              <div class="action-buttons">
+                <button *ngIf="!rdv.accepted" class="btn btn-success btn-sm" (click)="accepterRendezVous(rdv.id!)">
+                  ✓ Accepter
+                </button>
+                <button class="btn btn-danger btn-sm" (click)="annulerRendezVous(rdv.id!)">
+                  ✗ Annuler
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div *ngIf="rendezVousList.length > 0 && filteredRendezVous.length === 0" class="empty-state">
+        <div class="empty-state-icon">🔍</div>
+        <h3>Aucun résultat</h3>
+        <p>Aucun rendez-vous ne correspond aux filtres sélectionnés</p>
+      </div>
+    </div>
+  </div>
+</div>

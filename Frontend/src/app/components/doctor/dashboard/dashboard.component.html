@@ -1,0 +1,57 @@
+<div class="dashboard-page">
+  <div class="container">
+    <h1>Tableau de Bord Médecin</h1>
+    
+    <div *ngIf="loading" class="loading">Chargement des données...</div>
+
+    <div *ngIf="errorMessage && !loading" class="alert alert-danger">
+      {{ errorMessage }}
+    </div>
+
+    <div class="dashboard-grid" *ngIf="!loading && !errorMessage">
+      <div class="stat-card patients">
+        <div class="stat-icon">👥</div>
+        <div class="stat-content">
+          <h3>Total Patients</h3>
+          <p class="stat-number">{{ totalPatients }}</p>
+        </div>
+        <a routerLink="/doctor/patients" class="stat-link">Voir tous →</a>
+      </div>
+
+      <div class="stat-card rendezvous">
+        <div class="stat-icon">📅</div>
+        <div class="stat-content">
+          <h3>Rendez-vous</h3>
+          <p class="stat-number">{{ totalRendezVous }}</p>
+        </div>
+        <a routerLink="/doctor/rendezvous" class="stat-link">Gérer →</a>
+      </div>
+
+      <div class="stat-card today">
+        <div class="stat-icon">📆</div>
+        <div class="stat-content">
+          <h3>Aujourd'hui</h3>
+          <p class="stat-number">{{ rendezVousToday }}</p>
+          <small>rendez-vous</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="quick-actions" *ngIf="!loading && !errorMessage">
+      <h2>Accès Rapide</h2>
+      <div class="actions-grid">
+        <a routerLink="/doctor/patients" class="action-card">
+          <div class="action-icon">👨‍⚕️</div>
+          <h3>Mes Patients</h3>
+          <p>Consulter la liste de vos patients</p>
+        </a>
+
+        <a routerLink="/doctor/rendezvous" class="action-card">
+          <div class="action-icon">🗓️</div>
+          <h3>Rendez-vous</h3>
+          <p>Voir votre planning et RDV</p>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

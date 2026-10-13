@@ -1,0 +1,232 @@
+<div class="create-user-page">
+  <div class="container">
+    <div class="page-header">
+      <h1>{{ 'Créer un utilisateur' }}</h1>
+      <button class="btn btn-secondary" (click)="cancel()">
+        ← Retour
+      </button>
+    </div>
+
+    <div class="card">
+      <form (ngSubmit)="onSubmit()" #userForm="ngForm">
+        <!-- Messages -->
+        <div *ngIf="errorMessage" class="alert alert-danger">
+          {{ errorMessage }}
+        </div>
+        <div *ngIf="successMessage" class="alert alert-success">
+          {{ successMessage }}
+        </div>
+
+        <!-- Sélection du rôle -->
+        <div class="form-section">
+          <h3>🎭 Type d'utilisateur</h3>
+          
+          <div class="form-group">
+            <label for="role">Rôle *</label>
+            <select 
+              id="role" 
+              name="role"
+              class="form-control"
+              [(ngModel)]="user.role"
+              (change)="onRoleChange()"
+              required>
+              <option *ngFor="let role of roles" [value]="role">
+                {{ role }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Informations personnelles -->
+        <div class="form-section">
+          <h3>👤 Informations personnelles</h3>
+          
+          <div class="grid grid-2">
+            <div class="form-group">
+              <label for="firstName">Prénom *</label>
+              <input 
+                type="text" 
+                id="firstName" 
+                name="firstName"
+                class="form-control"
+                [(ngModel)]="user.firstName"
+                required>
+            </div>
+
+            <div class="form-group">
+              <label for="lastName">Nom *</label>
+              <input 
+                type="text" 
+                id="lastName" 
+                name="lastName"
+                class="form-control"
+                [(ngModel)]="user.lastName"
+                required>
+            </div>
+          </div>
+
+          <div class="grid grid-2">
+            <div class="form-group">
+              <label for="email">Email *</label>
+              <input 
+                type="email" 
+                id="email" 
+                name="email"
+                class="form-control"
+                [(ngModel)]="user.email"
+                required
+                email>
+            </div>
+
+            <div class="form-group">
+              <label for="phone">Téléphone *</label>
+              <input 
+                type="tel" 
+                id="phone" 
+                name="phone"
+                class="form-control"
+                [(ngModel)]="user.phone"
+                placeholder="06 12 34 56 78"
+                required>
+            </div>
+          </div>
+        </div>
+
+        <!-- Adresse -->
+        <div class="form-section">
+          <h3>📍 Adresse</h3>
+          
+          <div class="form-group">
+            <label for="rue">Rue *</label>
+            <input 
+              type="text" 
+              id="rue" 
+              name="rue"
+              class="form-control"
+              [(ngModel)]="user.rue"
+              placeholder="12 rue de la République"
+              required>
+          </div>
+
+          <div class="grid grid-2">
+            <div class="form-group">
+              <label for="codePostal">Code Postal *</label>
+              <input 
+                type="text" 
+                id="codePostal" 
+                name="codePostal"
+                class="form-control"
+                [(ngModel)]="user.codePostal"
+                placeholder="75001"
+                required>
+            </div>
+
+            <div class="form-group">
+              <label for="ville">Ville *</label>
+              <input 
+                type="text" 
+                id="ville" 
+                name="ville"
+                class="form-control"
+                [(ngModel)]="user.ville"
+                placeholder="Paris"
+                required>
+            </div>
+          </div>
+        </div>
+
+        <!-- Spécialité (pour Doctor uniquement) -->
+        <div class="form-section" *ngIf="user.role === 'DOCTOR'">
+          <h3>🏥 Spécialité Médicale</h3>
+          
+          <div class="form-group">
+            <label for="specialty">Spécialité *</label>
+            <select 
+              id="specialty" 
+              name="specialty"
+              class="form-control"
+              [(ngModel)]="user.specialty"
+              required>
+              <option [ngValue]="undefined">-- Sélectionnez une spécialité --</option>
+              <option *ngFor="let spec of specialities" [value]="spec">
+                {{ spec }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Docteur assigné (pour Secretary uniquement) -->
+        <div class="form-section" *ngIf="user.role === 'SECRETARY'">
+          <h3>👨‍⚕️ Docteur assigné</h3>
+          
+          <div class="form-group">
+            <label for="doctorId">Sélectionner un docteur *</label>
+            <select 
+              id="doctorId" 
+              name="doctorId"
+              class="form-control"
+              [(ngModel)]="user.doctorId"
+              required>
+              <option [ngValue]="undefined">-- Sélectionnez un docteur --</option>
+              <option *ngFor="let doctor of doctors" [value]="doctor.id">
+                Dr. {{ doctor.firstName }} {{ doctor.lastName }} - {{ doctor.specialty }}
+              </option>
+            </select>
+            
+            <small class="form-text" *ngIf="doctors.length === 0">
+              ⚠️ Aucun docteur disponible. Veuillez d'abord créer un docteur.
+            </small>
+          </div>
+        </div>
+
+        <!-- Mot de passe -->
+        <div class="form-section">
+          <h3>🔒 Sécurité</h3>
+          
+          <div class="grid grid-2">
+            <div class="form-group">
+              <label for="password">Mot de passe *</label>
+              <input 
+                type="password" 
+                id="password" 
+                name="password"
+                class="form-control"
+                [(ngModel)]="user.password"
+                minlength="6"
+                required>
+              <small class="form-text">Au moins 6 caractères</small>
+            </div>
+
+            <div class="form-group">
+              <label for="confirmPassword">Confirmer le mot de passe *</label>
+              <input 
+                type="password" 
+                id="confirmPassword" 
+                name="confirmPassword"
+                class="form-control"
+                [(ngModel)]="confirmPassword"
+                required>
+            </div>
+          </div>
+        </div>
+
+        <!-- Boutons -->
+        <div class="form-actions">
+          <button 
+            type="button" 
+            class="btn btn-secondary"
+            (click)="cancel()">
+            Annuler
+          </button>
+          <button 
+            type="submit" 
+            class="btn btn-primary"
+            [disabled]="!userForm.valid || loading">
+            <span *ngIf="!loading">Créer l'utilisateur</span>
+            <span *ngIf="loading">Création en cours...</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,67 @@
+<div class="patients-page">
+  <div class="container">
+    <div class="page-header">
+      <h1>Mes Patients</h1>
+      <a [routerLink]="isSecretary ? '/secretary' : '/doctor'" class="btn btn-secondary">
+        ← Retour au tableau de bord
+      </a>
+    </div>
+
+    <div *ngIf="loading" class="loading">Chargement des patients...</div>
+
+    <div *ngIf="errorMessage" class="alert alert-danger">
+      {{ errorMessage }}
+    </div>
+
+    <div *ngIf="successMessage" class="alert alert-success">
+      {{ successMessage }}
+    </div>
+
+    <div class="card" *ngIf="!loading">
+      <div class="card-header">
+        <h2>Liste de vos patients ({{ patients.length }})</h2>
+      </div>
+
+      <div *ngIf="patients.length === 0" class="empty-state">
+        <div class="empty-state-icon">👥</div>
+        <h3>Aucun patient</h3>
+        <p>Vous n'avez pas encore de patients assignés</p>
+      </div>
+
+      <table *ngIf="patients.length > 0">
+        <thead>
+          <tr>
+            <th>Nom Complet</th>
+            <th>Email</th>
+            <th>Téléphone</th>
+            <th>Date de Naissance</th>
+            <th>N° Sécurité Sociale</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let patient of patients">
+            <td>
+              <strong>{{ patient.firstName }} {{ patient.lastName }}</strong>
+            </td>
+            <td>{{ patient.email }}</td>
+            <td>{{ patient.phone }}</td>
+            <td>{{ patient.dateDeNaissance || 'N/A' }}</td>
+            <td>{{ patient.numeroSecuriteSociale || 'N/A' }}</td>
+            <td>
+              <button 
+                class="btn btn-primary btn-sm" 
+                (click)="voirDossier(patient)"
+                [disabled]="loading">
+                📄 Voir Dossier
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Modal PDF Viewer -->
+<app-pdf-viewer-modal></app-pdf-viewer-modal>

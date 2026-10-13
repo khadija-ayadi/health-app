@@ -1,0 +1,58 @@
+<div class="login-page">
+  <div class="login-container">
+    <div class="login-card">
+      <div class="login-header">
+        <h1>Connexion</h1>
+        <p>Bienvenue sur HealthApp</p>
+      </div>
+
+      <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            class="form-control"
+            [(ngModel)]="credentials.email"
+            required
+            email
+            placeholder="exemple@email.com"
+            [disabled]="loading"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="password">Mot de passe</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            class="form-control"
+            [(ngModel)]="credentials.password"
+            required
+            placeholder="••••••••"
+            [disabled]="loading"
+          />
+        </div>
+
+        <div *ngIf="errorMessage" class="alert alert-danger">
+          {{ errorMessage }}
+        </div>
+
+        <button
+          type="submit"
+          class="btn btn-primary btn-block"
+          [disabled]="!loginForm.valid || loading"
+        >
+          <span *ngIf="!loading">Se connecter</span>
+          <span *ngIf="loading">Connexion en cours...</span>
+        </button>
+      </form>
+
+      <div class="login-footer">
+        <p>Pas encore de compte ? Contactez l'administrateur</p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,23 @@
+package org.example.healthapp.enumeration;
+
+public enum Speciality {
+
+    CARDIOLOGY,
+    DERMATOLOGY,
+    DIETETICS ,
+    ENDOCRINOLOGY ,
+    GASTROENTEROLOGY,
+    GERIATRICS,
+    HEMATOLOGY,
+    AESTHETIC_MEDICINE,
+    GENERAL_MEDICINE,
+    NEUROLOGY,
+    NUTRITION  ,
+    ONCOLOGY,
+    OPHTHALMOLOGY,
+    OTOLARYNGOLOGY,
+    PEDIATRICS,
+    PSYCHIATRY,
+    PSYCHOLOGY,
+
+    }

@@ -1,0 +1,55 @@
+<div class="dashboard-page">
+  <div class="container">
+    <h1>Tableau de Bord Patient</h1>
+    
+    <div *ngIf="loading" class="loading">Chargement des données...</div>
+
+    <div *ngIf="errorMessage && !loading" class="alert alert-danger">
+      {{ errorMessage }}
+    </div>
+
+    <div class="dashboard-grid" *ngIf="!loading && !errorMessage">
+      <div class="stat-card total">
+        <div class="stat-icon">📋</div>
+        <div class="stat-content">
+          <h3>Total Rendez-vous</h3>
+          <p class="stat-number">{{ totalRendezVous }}</p>
+        </div>
+        <a routerLink="/patient/rendezvous" class="stat-link">Voir tous →</a>
+      </div>
+
+      <div class="stat-card pending">
+        <div class="stat-icon">⏳</div>
+        <div class="stat-content">
+          <h3>En Attente</h3>
+          <p class="stat-number">{{ rendezVousPending }}</p>
+        </div>
+      </div>
+
+      <div class="stat-card accepted">
+        <div class="stat-icon">✅</div>
+        <div class="stat-content">
+          <h3>Acceptés</h3>
+          <p class="stat-number">{{ rendezVousAccepted }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="quick-actions" *ngIf="!loading && !errorMessage">
+      <h2>Accès Rapide</h2>
+      <div class="actions-grid">
+        <a routerLink="/patient/rendezvous/create" class="action-card create">
+          <div class="action-icon">➕</div>
+          <h3>Prendre un Rendez-vous</h3>
+          <p>Réserver un nouveau rendez-vous médical</p>
+        </a>
+
+        <a routerLink="/patient/rendezvous" class="action-card view">
+          <div class="action-icon">📅</div>
+          <h3>Mes Rendez-vous</h3>
+          <p>Consulter vos rendez-vous programmés</p>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

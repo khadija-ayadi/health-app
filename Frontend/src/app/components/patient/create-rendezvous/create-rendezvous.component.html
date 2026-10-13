@@ -1,0 +1,151 @@
+<div class="create-rendezvous-page">
+  <div class="container">
+    <h1>{{ isEditMode ? 'Modifier' : 'Prendre' }} un Rendez-vous</h1>
+
+    <div class="card">
+      <form (ngSubmit)="onSubmit()" #rdvForm="ngForm">
+
+        <!-- Étape 1: Date et Heure du Rendez-vous -->
+        <div class="form-section">
+          <h2>📅 Date et Heure du Rendez-vous</h2>
+          
+          <div class="form-group">
+            <label for="dateRdv">Date et Heure souhaitées *</label>
+            <input 
+              type="datetime-local" 
+              id="dateRdv" 
+              name="dateRdv"
+              class="form-control"
+              [(ngModel)]="rendezVous.dateRendezVous"
+              [min]="getMinDate()"
+              required>
+            <small class="form-text text-muted">
+              Choisissez la date et l'heure souhaitées pour votre rendez-vous
+            </small>
+          </div>
+        </div>
+
+        <!-- Étape 2: Informations Patient -->
+        <div class="form-section">
+          <h2>📋 Vos Informations</h2>
+
+          <div class="grid grid-2">
+            <div class="form-group">
+              <label for="dateNaissance">Date de Naissance *</label>
+              <input 
+                type="date" 
+                id="dateNaissance" 
+                name="dateNaissance" 
+                class="form-control"
+                [(ngModel)]="rendezVous.dateDeNaissance" 
+                required>
+            </div>
+
+            <div class="form-group">
+              <label for="numeroSecu">N° Sécurité Sociale *</label>
+              <input 
+                type="text" 
+                id="numeroSecu" 
+                name="numeroSecu" 
+                class="form-control"
+                [(ngModel)]="rendezVous.numeroSecuriteSociale" 
+                placeholder="1 23 45 67 890 123 45" 
+                required>
+            </div>
+          </div>
+        </div>
+
+        <!-- Étape 3: Choix de la Spécialité -->
+        <div class="form-section">
+          <h2>🏥 Choisir une Spécialité</h2>
+
+          <div class="form-group">
+            <label for="speciality">Spécialité Médicale *</label>
+            <select 
+              id="speciality" 
+              name="speciality" 
+              class="form-control" 
+              [(ngModel)]="selectedSpeciality"
+              (change)="onSpecialityChange()" 
+              required>
+              <option [ngValue]="null">-- Sélectionnez une spécialité --</option>
+              <option *ngFor="let spec of specialities" [ngValue]="spec">
+                {{ getSpecialityLabel(spec) }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Étape 4: Choix du Docteur -->
+        <div class="form-section" *ngIf="selectedSpeciality">
+          <h2>👨‍⚕️ Choisir un Médecin</h2>
+
+          <div *ngIf="availableDoctors.length === 0" class="alert alert-info">
+            Aucun médecin disponible pour cette spécialité
+          </div>
+
+          <div class="doctors-grid" *ngIf="availableDoctors.length > 0">
+            <div 
+              *ngFor="let doctor of availableDoctors" 
+              class="doctor-card"
+              [class.selected]="selectedDoctorId === doctor.id" 
+              (click)="selectedDoctorId = doctor.id">
+
+              <div class="doctor-avatar">👨‍⚕️</div>
+              <div class="doctor-info">
+                <h3>Dr. {{ doctor.firstName }} {{ doctor.lastName }}</h3>
+                <p class="doctor-specialty">{{ getSpecialityLabel(doctor.specialty) }}</p>
+                <p class="doctor-contact">{{ doctor.email }}</p>
+                <p class="doctor-address" *ngIf="doctor.adresse">
+                  📍 {{ doctor.adresse.ville }}
+                </p>
+              </div>
+              <div class="select-indicator" *ngIf="selectedDoctorId === doctor.id">
+                ✓
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Étape 5: Notes (Optionnel) -->
+        <div class="form-section">
+          <h2>📝 Notes (Optionnel)</h2>
+
+          <div class="form-group">
+            <label for="notes">Informations complémentaires</label>
+            <textarea 
+              id="notes" 
+              name="notes" 
+              class="form-control" 
+              [(ngModel)]="rendezVous.notes" 
+              rows="4"
+              placeholder="Motif de la consultation, symptômes, etc."></textarea>
+          </div>
+        </div>
+
+        <!-- Messages d'erreur -->
+        <div *ngIf="errorMessage" class="alert alert-danger">
+          {{ errorMessage }}
+        </div>
+
+        <!-- Boutons d'action -->
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" routerLink="/patient/rendezvous">
+            Annuler
+          </button>
+          <button 
+            type="submit" 
+            class="btn btn-primary"
+            [disabled]="!rdvForm.valid || !selectedDoctorId || !selectedSpeciality || loading">
+            <span *ngIf="!loading">
+              {{ isEditMode ? 'Modifier' : 'Confirmer' }} le rendez-vous
+            </span>
+            <span *ngIf="loading">
+              {{ isEditMode ? 'Modification' : 'Création' }} en cours...
+            </span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

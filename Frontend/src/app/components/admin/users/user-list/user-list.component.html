@@ -1,0 +1,119 @@
+<div class="users-page">
+  <div class="container">
+    <div class="page-header">
+      <h1>Gestion des utilisateurs</h1>
+      <div class="header-actions">
+        <button class="btn btn-primary" (click)="createUser()">
+          ➕ Créer un utilisateur
+        </button>
+        <a routerLink="/admin" class="btn btn-secondary">
+          ← Retour au tableau de bord
+        </a>
+      </div>
+    </div>
+
+    <!-- Filtres et recherche -->
+    <div class="filters-section">
+      <div class="filter-group">
+        <label for="filterRole">Filtrer par rôle:</label>
+        <select 
+          id="filterRole" 
+          [(ngModel)]="filterRole" 
+          (change)="onFilterChange()" 
+          class="form-control">
+          <option value="all">Tous les rôles</option>
+          <option value="ADMIN">Administrateurs</option>
+          <option value="DOCTOR">Docteurs</option>
+          <option value="SECRETARY">Secrétaires</option>
+          <option value="PATIENT">Patients</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="searchTerm">Rechercher:</label>
+        <input 
+          type="text" 
+          id="searchTerm"
+          [(ngModel)]="searchTerm"
+          (input)="onFilterChange()"
+          class="form-control"
+          placeholder="Nom, prénom ou email...">
+      </div>
+
+      <div class="filter-results">
+        <strong>{{ filteredUsers.length }}</strong> utilisateur(s) trouvé(s)
+      </div>
+    </div>
+
+    <!-- Messages -->
+    <div *ngIf="loading" class="loading">Chargement des utilisateurs...</div>
+
+    <div *ngIf="errorMessage" class="alert alert-danger">
+      {{ errorMessage }}
+    </div>
+
+    <div *ngIf="successMessage" class="alert alert-success">
+      {{ successMessage }}
+    </div>
+
+    <!-- Tableau des utilisateurs -->
+    <div class="card" *ngIf="!loading">
+      <div *ngIf="users.length === 0" class="empty-state">
+        <div class="empty-state-icon">👥</div>
+        <h3>Aucun utilisateur</h3>
+        <p>Commencez par créer un utilisateur</p>
+        <button class="btn btn-primary" (click)="createUser()">
+          ➕ Créer le premier utilisateur
+        </button>
+      </div>
+
+      <table *ngIf="filteredUsers.length > 0">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nom complet</th>
+            <th>Email</th>
+            <th>Téléphone</th>
+            <th>Rôle</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of filteredUsers">
+            <td>{{ user.id }}</td>
+            <td>
+              <strong>{{ user.firstName }} {{ user.lastName }}</strong>
+            </td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.phone }}</td>
+            <td>
+              <span [class]="'badge ' + getRoleBadgeClass(user.role)">
+                {{ getRoleLabel(user.role) }}
+              </span>
+            </td>
+            <td>
+              <div class="action-buttons">
+                <button 
+                  class="btn btn-sm btn-info"
+                  (click)="editUser(user.id!)">
+                  ✏️ Modifier
+                </button>
+                <button 
+                  class="btn btn-sm btn-danger"
+                  (click)="deleteUser(user)">
+                  🗑️ Supprimer
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div *ngIf="users.length > 0 && filteredUsers.length === 0" class="empty-state">
+        <div class="empty-state-icon">🔍</div>
+        <h3>Aucun résultat</h3>
+        <p>Aucun utilisateur ne correspond aux filtres sélectionnés</p>
+      </div>
+    </div>
+  </div>
+</div>

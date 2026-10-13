@@ -1,0 +1,8 @@
+node_modules/
+venv/
+.venv/
+__pycache__/
+*.pyc
+.env
+.idea/
+.vscode/Backend/src/main/resources/application.properties

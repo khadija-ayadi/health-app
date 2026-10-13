@@ -1,0 +1,161 @@
+<div class="register-page">
+  <div class="register-container">
+    <div class="register-card">
+      <div class="register-header">
+        <h1>Créer un compte</h1>
+        <p>Inscrivez-vous pour prendre rendez-vous</p>
+      </div>
+
+      <form (ngSubmit)="onSubmit()" #registerForm="ngForm">
+        <!-- Messages -->
+        <div *ngIf="errorMessage" class="alert alert-danger">
+          {{ errorMessage }}
+        </div>
+        <div *ngIf="successMessage" class="alert alert-success">
+          {{ successMessage }}
+        </div>
+
+        <!-- Informations personnelles -->
+        <div class="form-section">
+          <h3>👤 Informations personnelles</h3>
+          
+          <div class="grid grid-2">
+            <div class="form-group">
+              <label for="firstName">Prénom *</label>
+              <input 
+                type="text" 
+                id="firstName" 
+                name="firstName"
+                class="form-control"
+                [(ngModel)]="patient.firstName"
+                required>
+            </div>
+
+            <div class="form-group">
+              <label for="lastName">Nom *</label>
+              <input 
+                type="text" 
+                id="lastName" 
+                name="lastName"
+                class="form-control"
+                [(ngModel)]="patient.lastName"
+                required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email *</label>
+            <input 
+              type="email" 
+              id="email" 
+              name="email"
+              class="form-control"
+              [(ngModel)]="patient.email"
+              required
+              email>
+          </div>
+
+          <div class="form-group">
+            <label for="phone">Téléphone *</label>
+            <input 
+              type="tel" 
+              id="phone" 
+              name="phone"
+              class="form-control"
+              [(ngModel)]="patient.phone"
+              placeholder="06 12 34 56 78"
+              required>
+          </div>
+        </div>
+
+        <!-- Adresse -->
+        <div class="form-section">
+          <h3>📍 Adresse</h3>
+          
+          <div class="form-group">
+            <label for="rue">Rue *</label>
+            <input 
+              type="text" 
+              id="rue" 
+              name="rue"
+              class="form-control"
+              [(ngModel)]="patient.rue"
+              placeholder="12 rue de la République"
+              required>
+          </div>
+
+          <div class="grid grid-2">
+            <div class="form-group">
+              <label for="codePostal">Code Postal *</label>
+              <input 
+                type="text" 
+                id="codePostal" 
+                name="codePostal"
+                class="form-control"
+                [(ngModel)]="patient.codePostal"
+                placeholder="75001"
+                required>
+            </div>
+
+            <div class="form-group">
+              <label for="ville">Ville *</label>
+              <input 
+                type="text" 
+                id="ville" 
+                name="ville"
+                class="form-control"
+                [(ngModel)]="patient.ville"
+                placeholder="Paris"
+                required>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mot de passe -->
+        <div class="form-section">
+          <h3>🔒 Sécurité</h3>
+          
+          <div class="form-group">
+            <label for="password">Mot de passe *</label>
+            <input 
+              type="password" 
+              id="password" 
+              name="password"
+              class="form-control"
+              [(ngModel)]="patient.password"
+              minlength="6"
+              required>
+            <small class="form-text">Au moins 6 caractères</small>
+          </div>
+
+          <div class="form-group">
+            <label for="confirmPassword">Confirmer le mot de passe *</label>
+            <input 
+              type="password" 
+              id="confirmPassword" 
+              name="confirmPassword"
+              class="form-control"
+              [(ngModel)]="confirmPassword"
+              required>
+          </div>
+        </div>
+
+        <!-- Boutons -->
+        <div class="form-actions">
+          <button 
+            type="submit" 
+            class="btn btn-primary btn-block"
+            [disabled]="!registerForm.valid || loading">
+            <span *ngIf="!loading">S'inscrire</span>
+            <span *ngIf="loading">Inscription en cours...</span>
+          </button>
+        </div>
+
+        <div class="login-link">
+          Vous avez déjà un compte ? 
+          <a routerLink="/login">Se connecter</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
